@@ -26,9 +26,11 @@ exports.signup = (req, res) => {
             .catch((error) =>{
               console.log(error)
              return res.status(400).json({ message: 'Utilisateur déjà existant' });
+        
             });
     })
     .catch(error => res.status(500).json({ error }));
+   
 
 
 };
@@ -72,29 +74,30 @@ exports.login = (req, res, next) => {
     });
 };
 
-//exports.modifyUser = (req, res, next) => {
- // const user = new User({
-   //   nom: req.body.nom,
-    //  prénom: req.body.prénom,
-    //  email: req.body.email,
-    //  userId: req.body.userId
-//});
- // console.log(user);
-  //User.updateOne({ id: req.params.id }, user)
- // .then(
-     // () => {
-        //  res.status(201).json({
-             // message: 'User updated successfully!'
-        //  });
-     // }
-  //).catch(
-     // (error) => {
-       //   res.status(400).json({
-         //     error: error
-         // });
-     // }
- // );
-//};
+exports.updateUser = (req, res, next) => {
+  const user = new User({
+      nom: req.body.nom,
+      prénom: req.body.prénom,
+     email: req.body.email,
+      userId: req.body.userId
+});
+ console.log(user);
+  User.updateOne({ id: req.params.id }, user)
+
+  .then(
+      () => {
+          res.status(201).json({
+              message: 'User updated successfully!'
+         });
+      }
+  ).catch(
+      (error) => {
+        res.status(400).json({
+           error: error
+         });
+      }
+  );
+};
 
 
 exports.deleteUser = (req, res, next) => {

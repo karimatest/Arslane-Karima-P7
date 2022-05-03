@@ -7,6 +7,8 @@ const db = require('./config/db');
 const helmet = require('helmet');
 //Importation du 'router' pour le parcours des utilisateurs
 const userRoutes = require('./routes/user');
+const PublicationsRoutes = require('./routes/publications');
+
 
 app.use(express.json());
 
@@ -27,6 +29,7 @@ app.use((req, res, next) => {
  app.use('/images', express.static(path.join(__dirname, 'images')));
  app.use(helmet());
  
- app.use('/api/user', userRoutes);
+ app.use('/api/auth', userRoutes);
+ app.use('/api/publications', PublicationsRoutes);
  
 module.exports = app;

@@ -1,19 +1,25 @@
 <template>
   <div id = "app">
     <router-view />
+    <page-footer> </page-footer>
   </div>
 </template>
 
 <script>
+import PageFooter from './components/PageFooter.vue'
 
 
 export default {
-  name: 'App'
+  name: 'App',
+    components: {
+        PageFooter,
+    },
   
 }
 </script>
 
-<style>
+
+  <style>
  #app {
 font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
