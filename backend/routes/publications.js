@@ -7,6 +7,6 @@ const multer = require('../middleware/multer-config');
 
 const publicationsCtrl = require('../controllers/publications');
 
-router.post('/', auth, multer, publicationsCtrl.createPublications);
+router.post('/', auth, multer, publicationsCtrl.createPublication);
 
 module.exports = router;

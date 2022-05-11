@@ -22,6 +22,6 @@ module.exports = sequelize.define("publications", {
 },
  {
   sequelize, 
-  tableName: 'publications' 
- 
+  tableName: 'publications', 
+  timestamps: false
 });

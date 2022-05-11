@@ -30,6 +30,6 @@ app.use((req, res, next) => {
  app.use(helmet());
  
  app.use('/api/auth', userRoutes);
- app.use('/api/publications', PublicationsRoutes);
+ app.use('/api/publication', PublicationsRoutes);
  
 module.exports = app;
