@@ -1,28 +1,29 @@
-const Publications = require('../models/Publications')
-
+const Publications = require('../models/Publications');
+const jwt = require('jsonwebtoken');
+const db = require('../config/db');
 // fs veut dire file-system, c'est ce qui nous permet de
 // modifier et supprimer un fichier
 const fs = require('fs');
 
 //Créer une publications
-exports.createPublication = (req, res) => {
-  console.log(req.auth);
-  let publicationImage;
-  //Si l'utilisateur publie une image
-  if (req.file) {
-    publicationImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-  };
-  // Création de l'objet publication
-  const newPublication = {
-    titre: req.body.titre,
-    content: req.body.content,
-    //imageUrl: publicationImage,
-    userId: req.body.userId
-  };
-  // Création de la publications
-  Publications.create(newPublication)
-    .then(publication => res.status(201).json(publication))
-    .catch(error => res.status(500).json({ error }));
+exports.createPublication = (req, res, next) => {
+  const userId = req.auth.userId;
+  console.log("user:", userId);
+  const image = req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : null;
+  const titre = req.body.titre ? req.body.titre : null;
+  const content = req.body.content ? req.body.content : null;
+
+  const sql = "INSERT INTO publications (user_id, image, titre, content) VALUES (?, ?, ?, ?);";
+  const sqlParams = [userId, image, titre, content];
+  db.query(sql, sqlParams, (error, results, fields) => {
+    if (error) {
+      res.status(500).json({ 'error': error.sqlMessage });
+    } else {
+      console.log(results);
+      res.status(201).json({ message: "Publication créer !" });
+    }
+  });
+
 };
 
 // Modifie une publications
@@ -38,28 +39,65 @@ exports.modifyPublications = (req, res, next) => {
 };
 
 //supprimer une publications
-exports.deletePublications = (req, res, next) => {
-  publication.findOne({ _id: req.params.id })
-    .then(publications => {
-      if (!publications) {
-        res.status(400).json({ error: new Error("Publication non trouvée !") });
+//exports.deletePublications = (req, res, next) => {
+// publication.findOne({ _id: req.params.id })
+// .then(publications => {
+// if (!publications) {
+// res.status(400).json({ error: new Error("Publication non trouvée !") });
+//}
+// Vérification que la publication appartient à la personne qui effectue la requête
+//if (publications.userId !== req.auth.userId) {
+//res.status(400).json({ error: new Error("Requête non autorisée !") });
+// }
+//Récuperation du nom du fichier à supprimer //
+// const filename = publications.imageUrl.split('/images/')[1];
+//Suppression le fichier avec la méthode 'unlik' du package 'fs'
+//fs.unlink(`images/${filename}`, () => {
+//suppression de la sauce dans la base de données // 
+//Publications.deleteOne({ _id: req.params.id })
+// .then(() => res.status(200).json({ message: 'Publication supprimé !' }))
+//       .catch(error => res.status(400).json({ error }));
+// });
+//})
+// .catch(error => res.status(500).json({ error }));
+//};
+
+exports.deletePublication = (req, res, next) => {
+  const publicationId = req.params.publicationId;
+  console.log(publicationId);
+  const sqlParams = [publicationId];
+  // recherche de l'image de la publication
+  const sqlDeleteImg = "SELECT * FROM PUBLICATIONS WHERE publicationId= ?;"
+  db.query(sqlDeleteImg, sqlParams, (errImg, results, fields) => {
+    if (errImg) {
+      res.status(500).json({ 'error': errImg.sqlMessage })
+      // si l'image existe, suppression
+    } else if (results[0].image != null) {
+      const oldImg = results[0].image
+      console.log(oldImg)
+      const oldFile = oldImg.split('/images/')[1];
+      fs.unlink(`images/${oldFile}`, (err => {
+        if (err) {
+          console.log(err);
+          return false
+        } else {
+          console.log("Image du publication supprimée !");
+          return true
+        }
+      }));
+    }
+    const sql = "DELETE FROM PUBLICATIONS WHERE publicationId= ?;";
+    db.query(sql, sqlParams, (error, result, fields) => {
+      if (error) {
+        res.status(400).json({ 'error': error.sqlMessage });
+      } else {
+        res.status(201).json({ message: 'Publication supprimé !' });
       }
-      // Vérification que la publication appartient à la personne qui effectue la requête
-      if (publications.userId !== req.auth.userId) {
-        res.status(400).json({ error: new Error("Requête non autorisée !") });
-      }
-      //Récuperation du nom du fichier à supprimer //
-      const filename = publications.imageUrl.split('/images/')[1];
-      //Suppression le fichier avec la méthode 'unlik' du package 'fs'
-      fs.unlink(`images/${filename}`, () => {
-        //suppression de la sauce dans la base de données // 
-        Publications.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Publication supprimé !' }))
-          .catch(error => res.status(400).json({ error }));
-      });
-    })
-    .catch(error => res.status(500).json({ error }));
+    });
+  })
 };
+
+
 
 //Afficher une publication
 exports.getOnePublications = (req, res, next) => {

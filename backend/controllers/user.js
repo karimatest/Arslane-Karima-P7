@@ -57,9 +57,9 @@ exports.login = (req, res, next) => {
           }
           //Le mot de passe correspond
           res.status(200).json({
-            userId: user._id,
+            userId: user.id,
             token: jwt.sign(
-              { userId: user._id },
+              { userId: user.id },
               process.env.SECRET_TOKEN,
               { expiresIn: '24h' }
             )
