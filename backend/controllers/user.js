@@ -78,49 +78,6 @@ exports.login = (req, res, next) => {
 };
 
 
-exports.updateUser = (req, res, next) => {
-  const user = new User({
-    nom: req.body.nom,
-    prénom: req.body.prénom,
-    email: req.body.email,
-    userId: req.body.userId
-  });
-  console.log(user);
-  User.updateOne({ id: req.params.id }, user)
-
-    .then(
-      () => {
-        res.status(201).json({
-          message: 'User modifier avec succes !'
-        });
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
-};
-
-
-exports.deleteUser = (req, res, next) => {
-  User.deleteOne({ id: req.params.id })
-    .then(
-      () => {
-        res.status(200).json({
-          message: 'Utilisateur supprimé!'
-        });
-      }
-    ).catch(
-      (error) => {
-        res.status(400).json({
-          error: error
-        });
-      }
-    );
-};
-
 //je récupère les infos de mon user 
 exports.getOneUser = (req, res, next) => {
   let sql = `SELECT * FROM User WHERE id = ?`;
