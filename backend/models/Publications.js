@@ -1,5 +1,6 @@
 const { DataTypes, Model, Sequelize } = require('sequelize');
 const sequelize = new Sequelize('mysql://root:@localhost:3306/groupomania');
+//const { bdd } = require('./index');
 
 module.exports = sequelize.define("publications", {
   id: {
@@ -16,7 +17,7 @@ module.exports = sequelize.define("publications", {
     type: DataTypes.STRING,
     allowNull: false
   },
-  imageUrl: {
+  image: {
     type: DataTypes.STRING,
   }
 },
@@ -24,4 +25,6 @@ module.exports = sequelize.define("publications", {
   sequelize, 
   tableName: 'publications', 
   timestamps: false
-});
+}
+
+);

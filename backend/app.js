@@ -13,10 +13,10 @@ const PublicationsRoutes = require('./routes/publications');
 app.use(express.json());
 
 //Connexion à la BDD
-db.connect(function(err) {
+/*db.connect(function(err) {
   if (err) throw err;
   console.log("Connecté à la base de données MySQL!");
-});
+});*/
   
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mysql = require('mysql2');
+const { DataTypes, Model, Sequelize } = require('sequelize');
 
 // Connexion bdd
 const db = mysql.createConnection({
@@ -18,4 +19,4 @@ db.connect(function(err) {
       });
     });
 
-module.exports = db;
+module.exports = db; 

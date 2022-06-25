@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 console.log(User);
+const db = require('../config/db');
 
 // fonction signup pour s'inscrir les nouveaux utilisateurs
 exports.signup = (req, res) => {
@@ -76,6 +77,7 @@ exports.login = (req, res, next) => {
     });
 };
 
+
 exports.updateUser = (req, res, next) => {
   const user = new User({
     nom: req.body.nom,
@@ -89,7 +91,7 @@ exports.updateUser = (req, res, next) => {
     .then(
       () => {
         res.status(201).json({
-          message: 'User updated successfully!'
+          message: 'User modifier avec succes !'
         });
       }
     ).catch(
@@ -121,18 +123,11 @@ exports.deleteUser = (req, res, next) => {
 
 //je récupère les infos de mon user 
 exports.getOneUser = (req, res, next) => {
-  User.findOne({
-    id: req.params.id
-  }).then(
-    (user) => {
-      res.status(200).json(user);
-      console.log(user);
-    }
-  ).catch(
-    (error) => {
-      res.status(404).json({
-        error: error
-      });
-    }
-  );
+  let sql = `SELECT * FROM User WHERE id = ?`;
+  db.query(sql, [req.params.id], function(err, data, fields) {
+  if (err) {
+      return res.status(404).json({err});
+  }
+  res.json({status: 200, data, message: "User affiché avec succès !"})
+});
 };
