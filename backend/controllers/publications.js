@@ -30,40 +30,6 @@ exports.createPublication = (req, res) => {
   });
 
 };
-/*exports.createPublication = (req, res, next) => {
-  // PostObject contient l'objet req.body en format JSON
-  const PubObject = JSON.parse(req.body.publication);
-
-  const newPublication = new Publications({
-      id: PubObject.UserId, // est ce que cet id est celui de l'utilisateur ou celui du post
-      //        id: PostObject.id, // est ce que cet id est celui de l'utilisateur ou celui du post
-      titre: PubObject.titre,
-      content: PubObject.content
-  });
-  // afficher dans la console pour debeug
-  console.log("fonction create");
-  console.log("PubObject:" + PubObject);
-
-  // gestion des images / attachements
-  if (req.file) {
-    image = `${req.protocol}.//${req.get('host')}/images/${req.file.filename}`
-  }
-
-  // Enregistrer dans la BDD
-  newPublication.save()
-      .then(() => {
-          res.status(201).json({
-              message: 'Publication créer'
-          });
-      })
-      .catch((error) => {
-          res.status(400).json({
-              message: 'Post save a retourné une erreur',
-              error: error
-          });
-      });
-
-};*/
 
 // Modifier une publication
 exports.updatePublication = (req, res) => {

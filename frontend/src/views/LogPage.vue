@@ -2,7 +2,7 @@
   <header>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <img src="../assets/icon-left-font.png" width="250" height="100" />
+        <img src="../assets/icon-left-font.png" width="330" height="70" />
       </div>
 
       <div id="navbarBasicExample" class="navbar-menu">
@@ -69,7 +69,7 @@
           </p>
         </div>
       </form>
-      <br>
+      <br />
       <p>
         Pas encore inscrit?
         <span
@@ -158,11 +158,11 @@
         </div>
         <div class="field">
           <p class="control">
-            <button type="submit" class="button is-success">S'inscrire</button>
+            <button type="" class="button is-success">S'inscrire</button>
           </p>
         </div>
       </form>
-      <br>
+      <br />
       <p>
         Déjà inscrit?
         <span
@@ -206,39 +206,54 @@ export default {
         })
         .then((res) => {
           if (!this.email) {
-            return res.status(401).json({ error: "Utilisateur non existant!" });
+            return alert ("Utilisateur non existant!");
           }
           localStorage.setItem("user", res.data.userId);
           localStorage.setItem("token", res.data.token);
-          this.$router.push("profil"),
+          this.$router.push("/home"),
             alert(
               " Bienvenue sur Groupomania, vous pouvez à présent échanger avec votre équipe ! "
             );
         })
         .catch((error) => console.log(error));
     },
-  },
+    signup() {
+      if (!this.nom || !this.prénom || !this.email || !this.password) {
+        alert("Merci de renseigner tous les champs obligatoire");
+        return false;
+      }
 
-  signup() {
-    if (!this.nom || !this.prénom || !this.email || !this.password) {
-      alert("Merci de renseigner tous les champs obligatoire");
-      return false;
-    }
-
-    axios
-      .post("http://localhost:3000/api/auth/signup", {
-        nom: this.nom,
-        prénom: this.prénom,
-        email: this.email,
-        password: this.password,
-      })
-      .then(() => {
-        this.login();
-      })
-      .catch((error) => console.log(error));
+      axios
+        .post("http://localhost:3000/api/auth/signup", {
+          nom: this.nom,
+          prénom: this.prénom,
+          email: this.email,
+          password: this.password,
+        })
+        .then(() => {
+          this.login();
+        })
+        .catch((error) => console.log(error));
+    },
   },
 };
 </script>
 
 <style >
+.is-success.input{
+  border-color: black;
+}
+.button.is-primary{
+  background-color: red;
+}
+.input{
+  border-color: black;
+}
+.button.is-success{
+  background-color: red;
+}
+a {
+  color: red;
+}
+
 </style>
