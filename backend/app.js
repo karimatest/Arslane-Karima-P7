@@ -8,15 +8,15 @@ const helmet = require('helmet');
 //Importation du 'router' pour le parcours des utilisateurs
 const userRoutes = require('./routes/user');
 const PublicationsRoutes = require('./routes/publications');
-
+const CommentairesRoutes = require('./routes/commentaires');
 
 app.use(express.json());
 
 //Connexion à la BDD
-/*db.connect(function(err) {
+db.connect(function(err) {
   if (err) throw err;
   console.log("Connecté à la base de données MySQL!");
-});*/
+});
   
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,5 +31,5 @@ app.use((req, res, next) => {
  
  app.use('/api/auth', userRoutes);
  app.use('/api/publication', PublicationsRoutes);
- 
+ app.use('/api/commentaires', CommentairesRoutes);
 module.exports = app;

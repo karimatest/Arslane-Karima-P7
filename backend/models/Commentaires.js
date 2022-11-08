@@ -6,10 +6,7 @@ module.exports = sequelize.define("commentaires", {
         type: DataTypes.STRING,
         allowNull: false
     },
-    date_commentaire:{
-        type: DataTypes.DataTime,
-        allowNull: false
-    },
+    
     publications_id:{
         type:DataTypes.INTEGER
     },
@@ -19,7 +16,8 @@ module.exports = sequelize.define("commentaires", {
     },
       
       { sequelize, 
-        tableName: 'commentaires' 
+        tableName: 'commentaires',
+        //timestamps: false
       
       });
       

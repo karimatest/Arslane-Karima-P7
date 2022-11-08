@@ -1,5 +1,4 @@
 const publications = require('../models/Publications');
-
 const jwt = require('jsonwebtoken');
 const db = require('../config/db');
 
@@ -7,8 +6,6 @@ const db = require('../config/db');
 // modifier et supprimer un fichier
 const fs = require('fs');
 const Publications = require('../models/Publications');
-
-
 
 //Créer une publications
 exports.createPublication = (req, res) => {
