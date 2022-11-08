@@ -21,6 +21,6 @@ h3 {
 }
 
 a {
-  color: #42b983;
+  color: #5d6461;
 }
 </style>
